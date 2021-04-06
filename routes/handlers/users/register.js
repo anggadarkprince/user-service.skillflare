@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
 
     if (validate.length) {
         return res.status(422).json({
-            status: 'validation-error',
+            status: 'validation error',
             code: 422,
             message: validate
         })
