@@ -1,14 +1,14 @@
 const bcrypt = require('bcrypt');
-const { Op } = require("sequelize");
+const {Op} = require("sequelize");
 const {User} = require('../../../models');
 const Validator = require('fastest-validator');
 const v = new Validator();
 
-module.export = async (req, res) => {
-    const schema ={
+module.exports = async (req, res) => {
+    const schema = {
         name: 'string|empty:false',
         email: 'email|empty:false',
-        password: 'string|min:6',
+        password: 'string|min:6|optional',
         profession: 'string|optional',
         avatar: 'string|optional'
     };
@@ -51,7 +51,10 @@ module.export = async (req, res) => {
         }
     }
 
-    const password = await bcrypt.hash(req.body.password, 10);
+    let password = user.passive;
+    if (req.body.password) {
+        password = await bcrypt.hash(req.body.password, 10);
+    }
     const {name, profession, avatar} = req.body;
 
     await user.update({

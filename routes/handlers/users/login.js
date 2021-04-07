@@ -31,9 +31,9 @@ module.exports = async (req, res) => {
 
     const isValidPassword = await bcrypt.compare(req.body.password, user.password);
     if (!isValidPassword) {
-        return res.status(404).json({
-            status: 'error',
-            code: 404
+        return res.status(401).json({
+            status: 'unauthenticated',
+            code: 401
         });
     }
 
